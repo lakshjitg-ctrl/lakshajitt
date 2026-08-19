@@ -17,20 +17,10 @@ const formatCurrency = (amount) => {
 };
 
 const formatUTSTopDate = (createdAt) => {
-  const d = createdAt ? new Date(createdAt) : new Date();
+  const d = createdAt ? new Date(createdAt) : new Date("2026-08-17T07:50:00");
   const months = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec",
+    "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+    "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
   ];
   const day = d.getDate().toString().padStart(2, "0");
   const month = months[d.getMonth()];
@@ -41,7 +31,7 @@ const formatUTSTopDate = (createdAt) => {
 };
 
 const formatUTSBottomDate = (createdAt) => {
-  const d = createdAt ? new Date(createdAt) : new Date();
+  const d = createdAt ? new Date(createdAt) : new Date("2026-08-17T07:50:00");
   const day = d.getDate().toString().padStart(2, "0");
   const month = (d.getMonth() + 1).toString().padStart(2, "0");
   const year = d.getFullYear();
@@ -51,7 +41,7 @@ const formatUTSBottomDate = (createdAt) => {
 };
 
 const formatUTSValidTill = (createdAt) => {
-  const d = createdAt ? new Date(createdAt) : new Date();
+  const d = createdAt ? new Date(createdAt) : new Date("2026-08-17T07:50:00");
   const validTillDate = new Date(d.getTime() + 3 * 60 * 60 * 1000);
   const day = validTillDate.getDate().toString().padStart(2, "0");
   const month = (validTillDate.getMonth() + 1).toString().padStart(2, "0");
@@ -75,9 +65,7 @@ const Toast = ({ message, type = "success", onClose }) => {
       : "bg-blue-600";
 
   return (
-    <div
-      className={`fixed top-4 right-4 z-50 ${bg} text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-3`}
-    >
+    <div className={`fixed top-4 right-4 z-50 ${bg} text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-3`}>
       <span className="font-medium">{message}</span>
     </div>
   );
@@ -90,7 +78,26 @@ export default function App() {
   const [bookings, setBookings] = useState(() => {
     try {
       const saved = localStorage.getItem("travelpro_bookings");
-      return saved ? JSON.parse(saved) : [];
+      return saved ? JSON.parse(saved) : [
+        {
+          id: "bk_default",
+          passengerName: "LAKSHJIT MANOJ GAURKHEDE",
+          mobile: "2222222222",
+          transportType: "Train (General)",
+          price: "255",
+          from: "MANSI JN.",
+          to: "SAMASTIPUR JN.",
+          distance: "563",
+          via: "---",
+          adults: "1",
+          children: "0",
+          trainType: "SUPERFAST",
+          pnr: "XK46XOZ3QR",
+          status: "Upcoming",
+          paymentStatus: "Paid",
+          createdAt: new Date("2026-08-17T07:50:00").getTime()
+        }
+      ];
     } catch {
       return [];
     }
@@ -134,9 +141,7 @@ export default function App() {
   }, [selectedTicket]);
 
   const formatTimer = (seconds) => {
-    const mins = Math.floor(seconds / 60)
-      .toString()
-      .padStart(2, "0");
+    const mins = Math.floor(seconds / 60).toString().padStart(2, "0");
     const secs = (seconds % 60).toString().padStart(2, "0");
     return `${mins}:${secs}`;
   };
@@ -243,15 +248,10 @@ export default function App() {
   const handleSecretCodeSubmit = (e) => {
     e.preventDefault();
     if (secretCodeInput.trim() === "2006") {
-      showToast(
-        "Secret code verified! Booking confirmed without online payment."
-      );
+      showToast("Secret code verified! Booking confirmed without online payment.");
       finalizeBookingWithPayment(false);
     } else {
-      showToast(
-        "Invalid secret code. Please complete payment via UPI QR.",
-        "error"
-      );
+      showToast("Invalid secret code. Please complete payment via UPI QR.", "error");
     }
   };
 
@@ -259,9 +259,7 @@ export default function App() {
     const file = e.target.files[0];
     if (!file) return;
 
-    const fileSignature = `${file.name}_${file.size}_${
-      file.lastModified
-    }_${Date.now()}`;
+    const fileSignature = `${file.name}_${file.size}_${file.lastModified}_${Date.now()}`;
     const isAlreadyUsed = bookings.some(
       (b) => b.screenshotSignature === fileSignature
     );
@@ -289,9 +287,7 @@ export default function App() {
 
   const verifyPaymentAndBook = () => {
     if (!paymentScreenshot) {
-      setVerificationError(
-        "Please upload a brand new payment screenshot first."
-      );
+      setVerificationError("Please upload a brand new payment screenshot first.");
       return;
     }
 
@@ -349,18 +345,14 @@ export default function App() {
     <div className="space-y-6 animate-fade-in pb-24">
       <div className="bg-gradient-to-r from-blue-700 to-blue-500 rounded-2xl p-6 text-white shadow-lg">
         <h2 className="text-2xl font-bold mb-1">TravelPro Agency</h2>
-        <p className="text-blue-100 opacity-90 mb-6 text-sm">
-          Dashboard Overview
-        </p>
+        <p className="text-blue-100 opacity-90 mb-6 text-sm">Dashboard Overview</p>
 
         <div className="grid grid-cols-2 gap-4">
           <div className="bg-white/25 backdrop-blur-sm rounded-xl p-4 border border-white/10">
             <p className="text-blue-100 text-xs font-medium uppercase tracking-wider mb-1">
               Total Revenue
             </p>
-            <p className="text-2xl font-bold">
-              {formatCurrency(stats.revenue)}
-            </p>
+            <p className="text-2xl font-bold">{formatCurrency(stats.revenue)}</p>
           </div>
           <div className="bg-white/25 backdrop-blur-sm rounded-xl p-4 border border-white/10">
             <p className="text-blue-100 text-xs font-medium uppercase tracking-wider mb-1">
@@ -372,9 +364,7 @@ export default function App() {
       </div>
 
       <div>
-        <h3 className="text-lg font-semibold text-slate-800 mb-4 px-1">
-          Quick Actions
-        </h3>
+        <h3 className="text-lg font-semibold text-slate-800 mb-4 px-1">Quick Actions</h3>
         <div className="grid grid-cols-4 gap-4">
           {[
             { label: "Flight", color: "bg-sky-100 text-sky-600" },
@@ -390,9 +380,7 @@ export default function App() {
               <div className={`p-3 rounded-full mb-2 ${item.color}`}>
                 <span className="font-bold text-xs">{item.label[0]}</span>
               </div>
-              <span className="text-xs font-medium text-slate-600">
-                {item.label}
-              </span>
+              <span className="text-xs font-medium text-slate-600">{item.label}</span>
             </button>
           ))}
         </div>
@@ -400,9 +388,7 @@ export default function App() {
 
       <div>
         <div className="flex justify-between items-center mb-4 px-1">
-          <h3 className="text-lg font-semibold text-slate-800">
-            Recent Bookings
-          </h3>
+          <h3 className="text-lg font-semibold text-slate-800">Recent Bookings</h3>
           <button
             onClick={() => setActiveTab("tickets")}
             className="text-blue-600 text-sm font-medium flex items-center"
@@ -422,9 +408,7 @@ export default function App() {
                   {booking.transportType?.[0] || "T"}
                 </div>
                 <div>
-                  <h4 className="font-semibold text-slate-800">
-                    {booking.passengerName}
-                  </h4>
+                  <h4 className="font-semibold text-slate-800">{booking.passengerName}</h4>
                   <p className="text-xs text-slate-500">
                     {booking.from} to {booking.to}
                   </p>
@@ -434,9 +418,7 @@ export default function App() {
                 <span className="text-xs font-medium px-2 py-1 rounded-full bg-blue-100 text-blue-700">
                   {booking.status}
                 </span>
-                <p className="text-xs font-semibold text-slate-600 mt-1">
-                  {booking.pnr}
-                </p>
+                <p className="text-xs font-semibold text-slate-600 mt-1">{booking.pnr}</p>
               </div>
             </div>
           ))}
@@ -452,9 +434,7 @@ export default function App() {
 
   const renderBookTicket = () => (
     <div className="animate-fade-in pb-24">
-      <h2 className="text-2xl font-bold text-slate-800 mb-6">
-        Book New Ticket
-      </h2>
+      <h2 className="text-2xl font-bold text-slate-800 mb-6">Book New Ticket</h2>
       <form
         onSubmit={(e) => {
           e.preventDefault();
@@ -470,9 +450,7 @@ export default function App() {
           </h3>
           <div className="space-y-4">
             <div>
-              <label className="block text-xs font-medium text-slate-500 mb-1">
-                Full Name *
-              </label>
+              <label className="block text-xs font-medium text-slate-500 mb-1">Full Name *</label>
               <input
                 name="passengerName"
                 defaultValue="LAKSHJIT MANOJ GAURKHEDE"
@@ -484,9 +462,7 @@ export default function App() {
             </div>
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-medium text-slate-500 mb-1">
-                  Mobile *
-                </label>
+                <label className="block text-xs font-medium text-slate-500 mb-1">Mobile *</label>
                 <input
                   name="mobile"
                   defaultValue="2222222222"
@@ -497,9 +473,7 @@ export default function App() {
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-slate-500 mb-1">
-                  Email
-                </label>
+                <label className="block text-xs font-medium text-slate-500 mb-1">Email</label>
                 <input
                   name="email"
                   type="email"
@@ -518,9 +492,7 @@ export default function App() {
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-medium text-slate-500 mb-1">
-                  Transport Type *
-                </label>
+                <label className="block text-xs font-medium text-slate-500 mb-1">Transport Type *</label>
                 <select
                   name="transportType"
                   className="w-full p-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"
@@ -532,9 +504,7 @@ export default function App() {
                 </select>
               </div>
               <div>
-                <label className="block text-xs font-medium text-slate-500 mb-1">
-                  Total Fare (₹) *
-                </label>
+                <label className="block text-xs font-medium text-slate-500 mb-1">Total Fare (₹) *</label>
                 <input
                   name="price"
                   defaultValue="255"
@@ -548,9 +518,7 @@ export default function App() {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-medium text-slate-500 mb-1">
-                  From Station/City *
-                </label>
+                <label className="block text-xs font-medium text-slate-500 mb-1">From Station/City *</label>
                 <input
                   name="from"
                   defaultValue="MANSI JN."
@@ -561,9 +529,7 @@ export default function App() {
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-slate-500 mb-1">
-                  To Station/City *
-                </label>
+                <label className="block text-xs font-medium text-slate-500 mb-1">To Station/City *</label>
                 <input
                   name="to"
                   defaultValue="SAMASTIPUR JN."
@@ -577,9 +543,7 @@ export default function App() {
 
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label className="block text-xs font-medium text-slate-500 mb-1">
-                  Distance (km) *
-                </label>
+                <label className="block text-xs font-medium text-slate-500 mb-1">Distance (km) *</label>
                 <input
                   name="distance"
                   defaultValue="563"
@@ -590,9 +554,7 @@ export default function App() {
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-slate-500 mb-1">
-                  Via Station *
-                </label>
+                <label className="block text-xs font-medium text-slate-500 mb-1">Via Station *</label>
                 <input
                   name="via"
                   defaultValue="---"
@@ -606,9 +568,7 @@ export default function App() {
 
             <div className="grid grid-cols-3 gap-3">
               <div>
-                <label className="block text-xs font-medium text-slate-500 mb-1">
-                  Adults
-                </label>
+                <label className="block text-xs font-medium text-slate-500 mb-1">Adults</label>
                 <input
                   name="adults"
                   defaultValue="1"
@@ -617,9 +577,7 @@ export default function App() {
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-slate-500 mb-1">
-                  Children
-                </label>
+                <label className="block text-xs font-medium text-slate-500 mb-1">Children</label>
                 <input
                   name="children"
                   defaultValue="0"
@@ -628,9 +586,7 @@ export default function App() {
                 />
               </div>
               <div>
-                <label className="block text-xs font-medium text-slate-500 mb-1">
-                  Train Type
-                </label>
+                <label className="block text-xs font-medium text-slate-500 mb-1">Train Type</label>
                 <input
                   name="trainType"
                   defaultValue="SUPERFAST"
@@ -713,9 +669,7 @@ export default function App() {
                 </div>
                 <div>
                   <div className="flex items-center space-x-2">
-                    <h4 className="font-bold text-slate-800">
-                      {booking.passengerName}
-                    </h4>
+                    <h4 className="font-bold text-slate-800">{booking.passengerName}</h4>
                     <span className="text-xs font-mono bg-slate-100 text-slate-600 px-1.5 py-0.5 rounded">
                       PNR: {booking.pnr}
                     </span>
@@ -729,9 +683,7 @@ export default function App() {
                 </div>
               </div>
               <div className="text-right">
-                <p className="font-bold text-slate-800">
-                  {formatCurrency(booking.price)}
-                </p>
+                <p className="font-bold text-slate-800">{formatCurrency(booking.price)}</p>
                 <span className="inline-block text-xs font-semibold px-2 py-0.5 rounded-full mt-1 bg-blue-100 text-blue-700">
                   {booking.status}
                 </span>
@@ -750,9 +702,7 @@ export default function App() {
 
   const renderCustomers = () => (
     <div className="animate-fade-in pb-24">
-      <h2 className="text-2xl font-bold text-slate-800 mb-6">
-        Customer Records
-      </h2>
+      <h2 className="text-2xl font-bold text-slate-800 mb-6">Customer Records</h2>
       <div className="space-y-3">
         {customers.map((customer) => (
           <div
@@ -779,9 +729,7 @@ export default function App() {
         ))}
         {customers.length === 0 && (
           <div className="text-center py-12 bg-white rounded-2xl border border-dashed border-slate-200">
-            <p className="text-slate-500 font-medium">
-              No customer records yet.
-            </p>
+            <p className="text-slate-500 font-medium">No customer records yet.</p>
           </div>
         )}
       </div>
@@ -877,9 +825,7 @@ export default function App() {
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 overflow-y-auto animate-fade-in">
           <div className="bg-white w-full max-w-sm rounded-3xl p-6 shadow-2xl space-y-4 my-auto">
             <div className="flex justify-between items-center border-b border-slate-100 pb-3">
-              <h3 className="font-bold text-lg text-slate-800">
-                Secure Payment
-              </h3>
+              <h3 className="font-bold text-lg text-slate-800">Secure Payment</h3>
               <button
                 onClick={() => setShowPaymentStep(false)}
                 className="text-slate-400 hover:text-slate-600 font-bold"
@@ -904,16 +850,10 @@ export default function App() {
               </div>
               <div className="text-xs text-slate-600 font-medium">
                 <p>
-                  Name:{" "}
-                  <span className="font-bold text-slate-800">
-                    Mr LAXJIT MANOJ MANOJ GAURKHEDE
-                  </span>
+                  Name: <span className="font-bold text-slate-800">Mr LAXJIT MANOJ MANOJ GAURKHEDE</span>
                 </p>
                 <p>
-                  UPI ID:{" "}
-                  <span className="font-bold text-blue-600">
-                    lakshjitg@okaxis
-                  </span>
+                  UPI ID: <span className="font-bold text-blue-600">lakshjitg@okaxis</span>
                 </p>
               </div>
             </div>
@@ -945,9 +885,7 @@ export default function App() {
               disabled={isVerifyingPayment}
               className="w-full py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-xl text-sm transition-all shadow-md"
             >
-              {isVerifyingPayment
-                ? "Verifying Screenshot..."
-                : "Verify & Confirm Booking"}
+              {isVerifyingPayment ? "Verifying Screenshot..." : "Verify & Confirm Booking"}
             </button>
 
             <form
@@ -972,7 +910,7 @@ export default function App() {
         </div>
       )}
 
-      {/* Exact Match Ticket View Page Modal */}
+      {/* Ticket View Page Modal */}
       {selectedTicket && (
         <div className="fixed inset-0 z-50 bg-[#1e293b]/95 backdrop-blur-xs flex items-center justify-center p-2 sm:p-4 overflow-y-auto animate-fade-in">
           <div className="bg-[#e9eff5] w-full max-w-md rounded-2xl overflow-hidden shadow-2xl relative flex flex-col max-h-[98vh]">
@@ -999,17 +937,12 @@ export default function App() {
             <div className="p-3 overflow-y-auto space-y-3 text-slate-800">
               {/* Mobile Info Bar */}
               <div className="text-xs font-semibold text-slate-700 px-1">
-                Mobile:{" "}
-                <span className="font-bold">
-                  {selectedTicket.mobile || "2222222222"}
-                </span>
+                Mobile: <span className="font-bold">{selectedTicket.mobile || "2222222222"}</span>
               </div>
 
               {/* Passenger Greeting Banner */}
               <div className="bg-white border border-slate-200 rounded-xl p-3 text-center text-xs font-extrabold text-slate-900 shadow-xs">
-                Thank you{" "}
-                {selectedTicket.passengerName || "LAKSHJIT MANOJ GAURKHEDE"} and
-                Happy Journey !
+                Thank you {selectedTicket.passengerName || "LAKSHJIT MANOJ GAURKHEDE"} and Happy Journey !
               </div>
 
               {/* Exact Ticket Card Matching Reference Image */}
@@ -1017,11 +950,11 @@ export default function App() {
                 {/* Top Green Accent Bar */}
                 <div className="h-2 bg-[#22c55e] w-full"></div>
 
-                {/* Header Container with vertical grey dashed lines */}
+                {/* Dark Grey Header Container with vertical grey dashed lines */}
                 <div className="bg-[#181c24] text-white px-3 py-4 relative flex justify-between items-center select-none">
-                  {/* Left Vertical "INDIAN RAILWAYS" with vertical grey dashed border */}
-                  <div className="px-1 py-1 flex items-center justify-center">
-                    <span className="text-[11px] font-extrabold tracking-[0.2em] text-slate-400 uppercase [writing-mode:vertical-lr] rotate-180 border-x border-dashed border-slate-500 py-2">
+                  {/* Left Vertical "INDIAN RAILWAYS" with vertical grey dashed lines */}
+                  <div className="px-1 py-1 flex items-center justify-center space-y-1">
+                    <span className="text-[11px] font-extrabold tracking-[0.2em] text-slate-400 uppercase [writing-mode:vertical-lr] rotate-180 py-2 border-x border-dashed border-slate-600">
                       INDIAN RAILWAYS
                     </span>
                   </div>
@@ -1048,9 +981,9 @@ export default function App() {
                     </p>
                   </div>
 
-                  {/* Right Vertical "भारतीय रेल" with vertical grey dashed border */}
-                  <div className="px-1 py-1 flex items-center justify-center">
-                    <span className="text-[12px] font-extrabold tracking-[0.25em] text-slate-400 uppercase [writing-mode:vertical-lr] border-x border-dashed border-slate-500 py-2">
+                  {/* Right Vertical "भारतीय रेल" with vertical grey dashed lines */}
+                  <div className="px-1 py-1 flex items-center justify-center space-y-1">
+                    <span className="text-[12px] font-extrabold tracking-[0.25em] text-slate-400 uppercase [writing-mode:vertical-lr] py-2 border-x border-dashed border-slate-600">
                       भारतीय रेल
                     </span>
                   </div>
@@ -1060,9 +993,7 @@ export default function App() {
                 <div className="bg-[#f0f4f8] text-slate-900 p-4 space-y-3.5 text-xs relative">
                   {/* Journey Ticket & PNR Header */}
                   <div className="flex justify-between items-center font-bold">
-                    <span className="text-slate-800 text-xs">
-                      Journey Ticket
-                    </span>
+                    <span className="text-slate-800 text-xs">Journey Ticket</span>
                     <span className="text-slate-900 text-sm font-mono tracking-wider">
                       {selectedTicket.pnr}
                     </span>
@@ -1088,20 +1019,15 @@ export default function App() {
                   {/* Via & Passengers Row */}
                   <div className="flex justify-between items-center text-[11px] text-slate-700">
                     <div>
-                      <span className="text-slate-400 block text-[10px] font-medium">
-                        Via
-                      </span>
+                      <span className="text-slate-400 block text-[10px] font-medium">Via</span>
                       <span className="font-bold text-slate-800">
                         {selectedTicket.via || "---"}
                       </span>
                     </div>
                     <div className="text-right">
-                      <span className="text-slate-400 block text-[10px] font-medium">
-                        Passenger
-                      </span>
+                      <span className="text-slate-400 block text-[10px] font-medium">Passenger</span>
                       <span className="font-bold text-slate-800">
-                        {selectedTicket.adults || 1} Adult,{" "}
-                        {selectedTicket.children || 0} Child
+                        {selectedTicket.adults || 1} Adult, {selectedTicket.children || 0} Child
                       </span>
                     </div>
                   </div>
@@ -1109,17 +1035,13 @@ export default function App() {
                   {/* Booked On & Valid Till Row */}
                   <div className="flex justify-between items-center text-[11px] text-slate-700">
                     <div>
-                      <span className="text-slate-400 block text-[10px] font-medium">
-                        Booked on
-                      </span>
+                      <span className="text-slate-400 block text-[10px] font-medium">Booked on</span>
                       <span className="font-bold text-slate-800">
                         {formatUTSBottomDate(selectedTicket.createdAt)}
                       </span>
                     </div>
                     <div className="text-right">
-                      <span className="text-slate-400 block text-[10px] font-medium">
-                        *Valid Till
-                      </span>
+                      <span className="text-slate-400 block text-[10px] font-medium">*Valid Till</span>
                       <span className="font-bold text-slate-800">
                         {formatUTSValidTill(selectedTicket.createdAt)}
                       </span>
@@ -1128,8 +1050,7 @@ export default function App() {
 
                   {/* Class, Train Type, Journey & Price */}
                   <div className="pt-2 border-t border-slate-300 text-[11px] font-extrabold text-slate-900">
-                    SECOND | {selectedTicket.trainType || "SUPERFAST"} | JOURNEY
-                    | ₹{Number(selectedTicket.price || 255).toFixed(2)}
+                    SECOND | {selectedTicket.trainType || "SUPERFAST"} | JOURNEY | ₹{Number(selectedTicket.price || 255).toFixed(2)}
                     <span className="block text-[10px] font-normal text-slate-500 mt-0.5">
                       IR: 27AAAGM0289C2ZI
                     </span>
@@ -1144,8 +1065,7 @@ export default function App() {
 
                   {/* Ticket Validity Disclaimer */}
                   <p className="text-[9px] text-slate-500 font-medium">
-                    *Valid for start of journey within 3 hour or until departure
-                    of the first train.
+                    *Valid for start of journey within 3 hour or until departure of the first train.
                   </p>
                 </div>
 
@@ -1155,9 +1075,7 @@ export default function App() {
 
               {/* Red Warning Banner */}
               <div className="bg-[#fff0f2] border border-[#fecdd3] rounded-xl p-3 text-[10px] text-[#be123c] text-center font-medium leading-relaxed shadow-2xs">
-                Note: This ticket is non refundable. Ticket is stored locally on
-                the device. Please do not change your handset or perform factory
-                reset.
+                Note: This ticket is non refundable. Ticket is stored locally on the device. Please do not change your handset or perform factory reset.
               </div>
 
               {/* Action Buttons */}
@@ -1186,9 +1104,7 @@ export default function App() {
               <div className="bg-white rounded-2xl p-4 shadow-xs border border-slate-200 text-center space-y-3">
                 <div className="bg-white p-2 inline-block rounded-xl border border-slate-100 shadow-2xs">
                   <img
-                    src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=UTS_TICKET_${
-                      selectedTicket.pnr
-                    }_${selectedTicket.passengerName || "LAKSHJIT"}`}
+                    src={`https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=UTS_TICKET_${selectedTicket.pnr}_${selectedTicket.passengerName || "LAKSHJIT"}`}
                     alt="Ticket QR"
                     className="w-40 h-40 mx-auto"
                   />
@@ -1199,9 +1115,7 @@ export default function App() {
                     IR recovers only 57% of cost of travel on an average.
                   </p>
                   <p className="text-[10px] text-slate-500 pt-1 border-t border-slate-200">
-                    This ticket is booked on a personal user ID. Its
-                    sale/purchase is an offence u/s 143 of the Railways Act,
-                    1989.
+                    This ticket is booked on a personal user ID. Its sale/purchase is an offence u/s 143 of the Railways Act, 1989.
                   </p>
                 </div>
               </div>
