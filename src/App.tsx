@@ -17,7 +17,7 @@ const formatCurrency = (amount) => {
 };
 
 const formatUTSTopDate = (createdAt) => {
-  const d = createdAt ? new Date(createdAt) : new Date("2026-08-17T07:50:00");
+  const d = createdAt ? new Date(createdAt) : new Date();
   const months = [
     "Jan", "Feb", "Mar", "Apr", "May", "Jun",
     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
@@ -31,7 +31,7 @@ const formatUTSTopDate = (createdAt) => {
 };
 
 const formatUTSBottomDate = (createdAt) => {
-  const d = createdAt ? new Date(createdAt) : new Date("2026-08-17T07:50:00");
+  const d = createdAt ? new Date(createdAt) : new Date();
   const day = d.getDate().toString().padStart(2, "0");
   const month = (d.getMonth() + 1).toString().padStart(2, "0");
   const year = d.getFullYear();
@@ -41,7 +41,7 @@ const formatUTSBottomDate = (createdAt) => {
 };
 
 const formatUTSValidTill = (createdAt) => {
-  const d = createdAt ? new Date(createdAt) : new Date("2026-08-17T07:50:00");
+  const d = createdAt ? new Date(createdAt) : new Date();
   const validTillDate = new Date(d.getTime() + 3 * 60 * 60 * 1000);
   const day = validTillDate.getDate().toString().padStart(2, "0");
   const month = (validTillDate.getMonth() + 1).toString().padStart(2, "0");
@@ -95,7 +95,7 @@ export default function App() {
           pnr: "XK46XOZ3QR",
           status: "Upcoming",
           paymentStatus: "Paid",
-          createdAt: new Date("2026-08-17T07:50:00").getTime()
+          createdAt: Date.now()
         }
       ];
     } catch {
@@ -950,11 +950,11 @@ export default function App() {
                 {/* Top Green Accent Bar */}
                 <div className="h-2 bg-[#22c55e] w-full"></div>
 
-                {/* Dark Grey Header Container with vertical grey dashed lines */}
+                {/* Dark Grey Header Container with exact vertical grey dashed side lines matching reference image */}
                 <div className="bg-[#181c24] text-white px-3 py-4 relative flex justify-between items-center select-none">
                   {/* Left Vertical "INDIAN RAILWAYS" with vertical grey dashed lines */}
                   <div className="px-1 py-1 flex items-center justify-center space-y-1">
-                    <span className="text-[11px] font-extrabold tracking-[0.2em] text-slate-400 uppercase [writing-mode:vertical-lr] rotate-180 py-2 border-x border-dashed border-slate-600">
+                    <span className="text-[11px] font-extrabold tracking-[0.2em] text-slate-400 uppercase [writing-mode:vertical-lr] rotate-180 py-2 border-x border-dashed border-slate-500">
                       INDIAN RAILWAYS
                     </span>
                   </div>
@@ -983,7 +983,7 @@ export default function App() {
 
                   {/* Right Vertical "भारतीय रेल" with vertical grey dashed lines */}
                   <div className="px-1 py-1 flex items-center justify-center space-y-1">
-                    <span className="text-[12px] font-extrabold tracking-[0.25em] text-slate-400 uppercase [writing-mode:vertical-lr] py-2 border-x border-dashed border-slate-600">
+                    <span className="text-[12px] font-extrabold tracking-[0.25em] text-slate-400 uppercase [writing-mode:vertical-lr] py-2 border-x border-dashed border-slate-500">
                       भारतीय रेल
                     </span>
                   </div>
